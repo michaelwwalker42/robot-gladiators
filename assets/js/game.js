@@ -28,7 +28,7 @@ var fightOrSkip = function() {
 
     //if yes (true), leave fight
     if (confirmSkip) {
-      window.alert(playerInfo.name + "has decided to skip this fight. Goodbye!");
+      window.alert(playerInfo.name + " has decided to skip this fight. Goodbye!");
       // subtract money from playerMoney for skipping
       playerInfo.money = Math.max(0, playerInfo.money - 10)
       
@@ -170,12 +170,22 @@ endGame();
 var endGame = function() {
   window.alert("The game has now ended. Let's see how you did!");
 
-  // if player is still alive, player wins!
-  if (playerInfo.health > 0) {
-      window.alert("Great job, you've survived the game! You now have a score of " + playerInfo.money + '.');
-  } else {
-      window.alert("You've lost your robot in battle!");
-    }
+  // check localStorage for high score, if not there, use 0
+  var highScore = localStorage.getItem("highscore");
+  if (highScore === null) {
+    highScore = 0;
+  }
+
+  // if player has more money than the hight score, player has new high score
+  if (playerInfo.money > highScore) {
+    localStorage.setItem("highscore", playerInfo.money);
+    localStorage.setItem("name", playerInfo.name);
+  
+  alert(playerInfo.name + " now has the high score of " + playerInfo.money + "!");
+} 
+else {
+  alert(playerInfo.name + " did not beat the high score of " + highScore + ". Maybe next time!");
+}
 // ask player if they'd like to play again
 var playAgainConfirm = window.confirm("Would you like to play again?");
 
@@ -186,10 +196,11 @@ if (playAgainConfirm) {
 else {
   window.alert("Thank you for playing Robot Gladiators! Come back soon!");
   }
+};
   
   // after the loop ends, player is either out of health or enemies to fight, so run the endGame function
 
-}
+
 // -------------------------------------------------------------SHOP FUNCTION----------------------------------------------------------
 
 var shop = function() {
@@ -225,7 +236,7 @@ var getPlayerName = function() {
   var name = "";
 
   //add loop here with prompt and condition
-  while (name ==="" || name === null) {
+  while (name === "" || name === null) {
     name = prompt("What is your robot's name?");
   }
 
